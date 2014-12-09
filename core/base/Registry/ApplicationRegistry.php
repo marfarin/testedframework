@@ -8,6 +8,7 @@
 
 namespace base\Registry;
 use base\Registry\BaseRegistry;
+use base\Registry\MyException;
 
 /**
  * Description of ApplicationRegistry
@@ -39,14 +40,14 @@ class ApplicationRegistry extends BaseRegistry {
         if(!self::hasLock($key)) {
             self::$data[$key] = $value;
         } else {
-            throw new Exception("переменная регистра заблокирована");
+            throw new MyException("переменная '$key' регистра заблокирована");
         }
     }
     static public function remove($key) {
         if(self::has($key) && self::hasLock($key)) {
             unset(self::$data[$key]);
         } else {
-            throw new Exception("Удаление невозможно! Переменная регистра не существует или не заблокирована!");
+            throw new MyException("Удаление невозможно! Переменная регистра не существует или не заблокирована!");
         }
     }
     static private function has($key) {
@@ -66,9 +67,9 @@ class ApplicationRegistry extends BaseRegistry {
     static public function show() {
         echo 'data</br>';
         print_r(self::$data);
-        echo '</br>lock</br>';
-        print_r(self::$lock);
-        echo '</br>tress 1 '.self::get('application_folder').'</br>';
+        //echo '</br>lock</br>';
+        //print_r(self::$lock);
+        //echo '</br>tress 1 '.self::get('application_folder').'</br>';
     }
     //put your code here
 }

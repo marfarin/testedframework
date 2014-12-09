@@ -15,7 +15,5 @@ use Exception;
  *
  * @author stager3
  */
-class Exception extends Exception
-{
-    
-}
+
+class MyException extends Exception { }

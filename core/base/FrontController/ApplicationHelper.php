@@ -8,6 +8,7 @@
 
 namespace base\FrontController;
 use base\Registry\ApplicationRegistry;
+use base\Registry\MyException;
 
 /**
  * Description of ApplicationHelper
@@ -31,6 +32,7 @@ class ApplicationHelper {
     
     function init($start_config) {
         $dsn = ApplicationRegistry::get('start_init');
+        echo 'dsn '.$dsn.'</br>';
         if (!is_null($dsn)) {
             return;
         }
@@ -93,15 +95,16 @@ class ApplicationHelper {
                     $this->ensure(array_key_exists($key, $tmp), 'Конфигурационыый файл поврежден! Не хватает необходимых полей');
                     break 1;
             }
+            ApplicationRegistry::unlock('start_init');
             ApplicationRegistry::set('start_init', true);
             ApplicationRegistry::lock('start_init');
-            ApplicationRegistry::show();    
+            //ApplicationRegistry::show();    
         }
     }
     
     private function ensure ($expr, $message) {
         if (!$expr) {
-            throw new \Exception();
+            throw new MyException();
         }
     }
     //put your code here
