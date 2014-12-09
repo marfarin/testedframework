@@ -1,5 +1,5 @@
 <?php
-namespace Autoloader;
+namespace base\Autoloader;
 //echo 'vbvb';
 class Loader
 {
@@ -33,18 +33,17 @@ class Loader
 		$file = str_replace('\\', DIRECTORY_SEPARATOR, $className) . '.php';
 		//echo $file.'</br>'.$dirs.'</br>';
 		self::loadFile($file, $dirs, true);
-		if (!class_exists($className, false) && !interface_exists($className, false)) {
+		if (!\class_exists($className, false) && !\interface_exists($className, false)) {
 			throw new \Exception("File '$file' does not exist or class '$className' was not found in the file");
 		}
 	}
 	static public function loadFile($filename, $dirs = null, $once = false)
 	{
-		$folders = array(
-				'systemdir' => $dirs['system_folder'],
+		$folders = ['systemdir' => $dirs['system_folder'],
 				'controller' => $dirs['application_folder'].'/'.$dirs['application_subfolder']['controllers_folder'],
 				'model' => $dirs['application_folder'].'/'.$dirs['application_subfolder']['models_folder'],
 				'view' => $dirs['application_folder'].'/'.$dirs['application_subfolder']['views_folder'],
-		);
+                                ];
 		$incPath = false;
 		$incPath2 = false;
 		foreach ($folders as $key=>$value)
@@ -72,7 +71,7 @@ class Loader
 				}
 				echo $incPath.'</br>';
 				if ($incPath) {
-					set_include_path($incPath);
+                                    \set_include_path($incPath);
 					echo 'xyz.</br>';
 				}
 				return true;
