@@ -11,9 +11,11 @@ namespace base\Registry;
  *
  * @author stager3
  */
-abstract class Registry {
-    abstract protected function get($key, $default = NULL);
-    abstract protected function set($key,$val);
-    abstract protected function remove($key);
+abstract class BaseRegistry {
+    abstract protected static function get($key, $default = NULL);
+    abstract protected static function set($key,$val);
+    abstract protected static function remove($key);
     //put your code here
 }
+
+

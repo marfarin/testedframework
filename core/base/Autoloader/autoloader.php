@@ -52,17 +52,19 @@ class Loader
 				if (is_array($value)) {
 					$dirs = implode(PATH_SEPARATOR, $value);
 				}
+                                $incPath2 = '/home/stager3/workspace/TestedFramework';
 				set_include_path($incPath2);
-				$incPath = $incPath2 = get_include_path();
+				$incPath = get_include_path();
 				echo $incPath.'</br>';
 				set_include_path($incPath . PATH_SEPARATOR . $value);
 				echo get_include_path().'</br>';
 			}
 			echo get_include_path().'</br>';
 			echo $filename.'</br>';
+                        echo $incPath.'/'. $value.'/'.$filename.' filename</br>';
 			if(file_exists($incPath.'/'. $value.'/'.$filename))
 			{
-				//echo get_include_path();
+				echo get_include_path().' sisi</br>';
 				//echo $filename;
 				if ($once) {
 					include_once $filename;
@@ -71,7 +73,7 @@ class Loader
 				}
 				echo $incPath.'</br>';
 				if ($incPath) {
-                                    \set_include_path($incPath);
+                                    set_include_path($incPath);
 					echo 'xyz.</br>';
 				}
 				return true;
@@ -111,4 +113,3 @@ class Loader
 		//echo self::$systemDir;
 	}
 }
-?>

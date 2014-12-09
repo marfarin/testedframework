@@ -6,22 +6,22 @@ class FrontController
 {
     private $applicationHelper;
     private function __construct() {}
-    static function run() {
+    static function run($start_config) {
         $instance = new FrontController();
-        $instance -> init();
-        $instance->handleRequest();
+        $instance -> init($start_config);
+        //$instance->handleRequest();
     }
     
-    function init() {
+    function init($start_config) {
         $applicationHelper = ApplicationHelper::instance();
-        $applicationHelper->init();
+        $applicationHelper->init($start_config);
     }
     
     function handleRequest() {
-        $request = new Request();
+        //$request = new Request();
         $cmd_r = 1;
         $cmd = 2;
-        $cmd->execute($request);
+        //$cmd->execute($request);
     }
 }
 ?>

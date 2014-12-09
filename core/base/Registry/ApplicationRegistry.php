@@ -7,13 +7,14 @@
  */
 
 namespace base\Registry;
+use base\Registry\BaseRegistry;
 
 /**
  * Description of ApplicationRegistry
  *
  * @author stager3
  */
-class ApplicationRegistry {
+class ApplicationRegistry extends BaseRegistry {
     private static $instance;
     private static $data;
     private static $lock = array();
@@ -61,6 +62,13 @@ class ApplicationRegistry {
         if(self::hasLock($key)) {
             unset(self::$lock[$key]);
         }
+    }
+    static public function show() {
+        echo 'data</br>';
+        print_r(self::$data);
+        echo '</br>lock</br>';
+        print_r(self::$lock);
+        echo '</br>tress 1 '.self::get('application_folder').'</br>';
     }
     //put your code here
 }
