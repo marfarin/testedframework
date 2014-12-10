@@ -1,5 +1,5 @@
 <?php
-namespace module1;
+namespace vendor1\module1;
 //require_once 'core/singleton.php';
 class testcontroller
 {

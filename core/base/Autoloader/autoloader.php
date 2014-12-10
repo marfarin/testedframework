@@ -1,5 +1,5 @@
 <?php
-namespace base\Autoloader;
+namespace IccTest\base\Autoloader;
 //echo 'vbvb';
 class Loader
 {

@@ -9,8 +9,7 @@
 namespace IccTest\base\FrontController;
 use IccTest\base\Registry\ApplicationRegistry;
 use IccTest\base\Registry\MyException;
-use IccTest\base\Autoloader\Psr4AutoloaderClass;
-//require_once 'core/base/Autoloader/PsrAutoloader.php';
+
 /**
  * Description of ApplicationHelper
  *
@@ -57,19 +56,12 @@ class ApplicationHelper {
         
         ApplicationRegistry::lock('system_config');
         
-        $loader = new Psr4AutoloaderClass();
-        $loader->register();
-        $loader->addNamespace($this->config['system_config']['system_vendor'].'\base', $this->config['system_config']['system_folder'].'/base');
-        $loader->addNamespace($this->config['system_config']['system_vendor'].'\MVC', $this->config['system_config']['system_folder'].'/MVC');
         $this->ensure(is_array($this->config['user_config']), 
                 "Системная конфигурация повреждена");
         
         foreach ($this->config['user_config'] as $key => $value) {
             ApplicationRegistry::set($key, $value);
             ApplicationRegistry::lock($key);
-            $loader->addNamespace($value['vendor'], 'application/controllers');
-            $loader->addNamespace($value['vendor'], 'application/models');
-            $loader->addNamespace($value['vendor'], 'application/views');
         }
         ApplicationRegistry::unlock('start_init');
         ApplicationRegistry::set('start_init', true);

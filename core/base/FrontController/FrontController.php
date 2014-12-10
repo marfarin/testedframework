@@ -1,7 +1,8 @@
 <?php
-namespace base\FrontController;
+namespace IccTest\base\FrontController;
 //use base\FrontController\Request;
 //require_once 'core/singleton.php';
+require_once 'core/base/Autoloader/PsrAutoloader.php';
 class FrontController
 {
     private $applicationHelper;
@@ -9,7 +10,7 @@ class FrontController
     static function run($start_config) {
         $instance = new FrontController();
         $instance -> init($start_config);
-        //$instance->handleRequest();
+        $instance->handleRequest();
     }
     
     function init($start_config) {
@@ -19,7 +20,7 @@ class FrontController
     
     function handleRequest() {
         //$request = new Request();
-        $cmd_r = 1;
+        $cmd_r = 1;//CommandResolver
         $cmd = 2;
         //$cmd->execute($request);
     }

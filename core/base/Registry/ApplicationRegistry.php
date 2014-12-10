@@ -6,9 +6,9 @@
  * and open the template in the editor.
  */
 
-namespace base\Registry;
-use base\Registry\BaseRegistry;
-use base\Registry\MyException;
+namespace IccTest\base\Registry;
+use IccTest\base\Registry\BaseRegistry;
+use IccTest\base\Registry\MyException;
 
 /**
  * Description of ApplicationRegistry

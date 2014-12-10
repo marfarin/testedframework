@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-namespace base\Registry;
+namespace IccTest\base\Registry;
 
 use Exception;
 
