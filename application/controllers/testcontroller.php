@@ -1,7 +1,7 @@
 <?php
-namespace vendor1\module1;
+namespace vendor1\controller;
 //require_once 'core/singleton.php';
-class testcontroller
+class TestController
 {
 	function __construct() {
 		echo "</br>Конструктор класса BaseClass\n";

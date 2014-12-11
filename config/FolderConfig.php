@@ -12,13 +12,44 @@ return array(
         'autoloader' => "core/base/Autoloader/PsrAutoloader.php"
     ),
     'user_config' => array(
-        'module1' => array(
-            'vendor'=>"vendor1",//Является корнем пространства имен пользователя
-            'routing_rule' => array(),
-                    ),
-        'module2' => array(
-            'vendor'=>"vendor2",//Является корнем пространства имен пользователя
-            'routing_rule' => array(),
+        'routes' => array(
+            'route1' => array(
+                'vendor'=>"vendor1",
+                'controllerclass' => "TestController",
+                'defailtAction' => "index",
+                'id' => array (
+                    'separator' => "/",
+                ),
+                'action' => array (
+                    'alias' => "action",//Только при использовании разделителя ?
+                    'separator' => "/",
+                ),
+                'controller' => array (
+                    'alias' => "controller",
+                    'separator' => "/",
+                   
+                ),
+            ),
+            'route2' => array(
+                'vendor'=>"vendor1",
+                'controllerclass' => "TestController",
+                'defailtAction' => "index",
+                'id' => array (
+                    'request' => "uri",
+                    'child_request' => "uri"
+                    
+                ),
+                'action' => array (
+                    'alias' => "action",//Только при использовании разделителя ?
+                    'request' => "uri",
+                    
+                ),
+                'controller' => array (
+                    'alias' => "controller",
+                    'request' => "uri",
+                    
+                ),
+            ),
         ),
     ),
 );

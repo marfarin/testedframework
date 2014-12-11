@@ -32,7 +32,7 @@ class CommandResolver {
             return self::$default_cmd;
         }
         $cmd = str_replace(array('.', $sep), "", $cmd);
-        $filepath = "application{$sep}controllers{$sep}";
+        $filepath = "application{$sep}controllers{$sep}{$cmd}";
     }
     //put your code here
 }

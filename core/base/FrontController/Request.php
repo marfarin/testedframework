@@ -7,7 +7,7 @@
  */
 
 namespace IccTest\base\FrontController;
-
+use IccTest\base\Registry\ApplicationRegistry;
 /**
  * Description of Request
  *
@@ -15,38 +15,58 @@ namespace IccTest\base\FrontController;
  */
 class Request {
     
-    private $properties;
-    private $feedback = array();
+    private $argument = array(
+        'use'=>"",
+        'action'=>"",
+        'controller'=>"",
+        'id'=>array(),
+    );
+    private $uri;
     
     function __construct() {
-        $this->init();
+        if($this->init()) {
+            ApplicationRegistry::set($this->uri, $this->argument);
+        }
     }
     
-    function init() {
-        if(isset($_SERVER['REQUEST_METHOD'])) {
-            $this->properties = $_REQUEST;
-            return;
-        }
-        foreach ($_SERVER['argv'] as $arg) {
-            if(strpos($arg, '=')) {
-                list($key, $val) = explode("=", $arg);
-                $this->setProperty($key, $val);
+    protected function init() {
+        $this->uri = $this->parseRequest();
+        if(null!==ApplicationRegistry::get($this->uri))
+        {
+            $this->argument = ApplicationRegistry::get($this->uri);
+            print_r($this->argument);
+            return false;
+        } else {
+            $serachRouter = $this->serachRouter();
+            echo $serachRouter;
+            //ApplicationRegistry::show();
+            $routingRule = ApplicationRegistry::get('routes');
+            //print_r($routingRule[$serachRouter]);
+            if(isset($routingRule[$serachRouter])) {
+                $this->argument['controller'] = $routingRule[$serachRouter]['controllerclass'];
+                $this->argument['use'] = $routingRule[$serachRouter]['vendor'].'\controller\\'.$routingRule[$serachRouter]['controllerclass'];
+                $this->argument['action'] = $this->addAction();
+                $this->argument['id'] = $this->addId();
+                print_r($this->argument);
+            } else {
+                echo '404';
             }
+            return TRUE;
         }
     }
     
-    function getProperty($key)
+    function getArgument($key)
     {
-        if(isset($this->properties[$key])) {
-            return $this->properties[$key];
+        if(isset($this->$argument[$key])) {
+            return $this->$argument[$key];
         }
     }
     
-    function setProperty($key, $val) {
-        $this->properties[$key] = $val;
+    protected function setArgument($key, $val) {
+        $this->$argument[$key] = $val;
     }
     
-    function addFeedback($msg) {
+    /*protected function addFeedback($msg) {
         array_push($this->feedback, $msg);
     }
     
@@ -56,5 +76,42 @@ class Request {
     
     function getFeedbackString($separator = "\n") {
         return implode($separator, $this->feedback);
+    }*/
+    protected function parseRequest()
+    {
+        return Filter_input(\INPUT_SERVER, "REQUEST_URI");
+    }
+    
+    private function serachRouter()
+    {
+        //echo '</br>'.$this->addControllerUri().'</br>';
+        //echo preg_replace("/^[A-Za-z0-9]*\=/","", $this->addControllerUri());
+        return preg_replace("/^[A-Za-z0-9]*\=/","", $this->addControllerUri());
+        
+    }
+    
+    private function addControllerUri()
+    {
+        return \preg_split("/\/\?|\&|\?|\//", $this->uri)[1];
+    }
+    
+    private function isGet($param) 
+    {
+        return \preg_match('/\=/', $param);
+    }
+    private function addAction()
+    {
+        
+        return \preg_replace("/^[A-Za-z0-9]*\=/",'', \preg_split("/\/\?|\&|\?|\//", $this->uri)[2]);
+    }
+    private function addId()
+    {   $testarray = array();
+        $array = \preg_split("/\/\?|\&|\?|\//", $this->uri);
+        foreach ($array as $key => $value) {
+            if($key>2) {
+                $testarray['_idkey'.$key] = \preg_replace("/^[A-Za-z0-9]*\=/","", $value);
+            }
+        }
+        return $testarray;
     }
 }

@@ -33,7 +33,7 @@ class ApplicationHelper {
     
     function init($start_config) {
         $dsn = ApplicationRegistry::get('start_init');
-        echo 'dsn '.$dsn.'</br>';
+        //echo 'dsn '.$dsn.'</br>';
         if (!is_null($dsn)) {
             return;
         }
@@ -63,23 +63,25 @@ class ApplicationHelper {
         $loader->addNamespace($this->config['system_config']['system_vendor'].'\MVC', $this->config['system_config']['system_folder'].'/MVC');
         $this->ensure(is_array($this->config['user_config']), 
                 "Системная конфигурация повреждена");
-        
-        foreach ($this->config['user_config'] as $key => $value) {
-            ApplicationRegistry::set($key, $value);
-            ApplicationRegistry::lock($key);
-            $loader->addNamespace($value['vendor'], 'application/controllers');
-            $loader->addNamespace($value['vendor'], 'application/models');
-            $loader->addNamespace($value['vendor'], 'application/views');
+        ApplicationRegistry::set('routes', $this->config['user_config']['routes']);
+        ApplicationRegistry::lock('routes');
+        foreach ($this->config['user_config']['routes'] as $key => $value) {
+            //ApplicationRegistry::set($key, $value);
+            //ApplicationRegistry::lock($key);
+            $this->ensure(isset($value['vendor']), "Системная конфигурация повреждена");
+            $loader->addNamespace($value['vendor'].'\controller', 'application/controllers');
+            $loader->addNamespace($value['vendor'].'\model', 'application/models');
+            $loader->addNamespace($value['vendor'].'\view', 'application/views');
         }
         ApplicationRegistry::unlock('start_init');
         ApplicationRegistry::set('start_init', true);
         ApplicationRegistry::lock('start_init');
-        ApplicationRegistry::show(); 
+        //ApplicationRegistry::show(); 
     }
     
     private function ensure ($expr, $message) {
         if (!$expr) {
-            throw new MyException();
+            throw new MyException($message);
         }
     }
     //put your code here

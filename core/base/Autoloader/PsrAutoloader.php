@@ -87,11 +87,11 @@ class Psr4AutoloaderClass
     {
         // normalize namespace prefix
         $prefix = trim($prefix, '\\') . '\\';
-        echo '</br>'.$base_dir.' xyz '.$prefix.'</br>';
+        //echo '</br>'.$base_dir.' xyz '.$prefix.'</br>';
         
         // normalize the base directory with a trailing separator
         $base_dir = rtrim($base_dir, DIRECTORY_SEPARATOR) . '/';
-        echo '</br>'.'normalaize basedir '.$base_dir.'</br>';
+        //echo '</br>'.'normalaize basedir '.$base_dir.'</br>';
 
         // initialize the namespace prefix array
         if (isset($this->prefixes[$prefix]) === false) {
@@ -122,7 +122,7 @@ class Psr4AutoloaderClass
         // class name to find a mapped file name
         while (false !== $pos = strrpos($prefix, '\\')) {
             $i++;
-            echo 'iter '.$i.' for '.$class;
+            //echo 'iter '.$i.' for '.$class;
 
             // retain the trailing namespace separator in the prefix
             $prefix = substr($class, 0, $pos + 1);
@@ -130,12 +130,12 @@ class Psr4AutoloaderClass
             // the rest is the relative class name
             $relative_class = substr($class, $pos + 1);
             
-            echo '</br> '.$prefix.' '.$relative_class.'</br>';
+            //echo '</br> '.$prefix.' '.$relative_class.'</br>';
             
             // try to load a mapped file for the prefix and relative class
             $mapped_file = $this->loadMappedFile($prefix, $relative_class);
             if ($mapped_file) {
-                echo '</br> '.$prefix.' '.$relative_class.'</br>';
+                //echo '</br> '.$prefix.' '.$relative_class.'</br>';
                 return $mapped_file;
             }
 
