@@ -48,9 +48,15 @@ class Request {
     
     function getArgument($key)
     {
-        if(isset($this->$argument[$key])) {
-            return $this->$argument[$key];
+        //echo 'ska';
+        if(\array_key_exists($key, $this->argument)) {
+            if(isset($this->argument[$key])) {
+                return $this->argument[$key];
+            }
+        } else {
+            return false;
         }
+
     }
     
     protected function setArgument($key, $val) {

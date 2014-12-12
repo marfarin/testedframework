@@ -46,22 +46,23 @@ class ControllerResolver {
             } else {
                $action = $action.'Action'; 
             }
-            //use $use;
-            if(class_exists($use)) {
+            echo $use;
+            if(class_exists($use.'()')) {
                 if(!method_exists($use, $action)) {
                     $action = $ruleRouting[$router]['defailtAction'].'Action';
                 }
                 $controllerClass = new \ReflectionClass($use);
                 if($controllerClass->isSubclassOf(self::$base_cmd)) {
-                    return $controllerClass->newInstance();
+                    $method = $controllerClass->newInstance()->getMethod($action);
+                    $method->invokeArgs($controllerClass->newInstance(), $param);
                 } else {
-                    echo '404';
+                    echo '404(1)';
                 }
             } else {
-                echo '404';
+                echo '404(2)';
             }
         } else {
-            echo '404';
+            echo '404(3)';
         }
         
         //$router = str_replace(array('.', $sep), "", $cmd);

@@ -31,7 +31,7 @@ class FrontController
         $cmd_r = new ControllerResolver();
         $cmd = $cmd_r->getController($request);
         
-        //$cmd->execute($request);
+        //$cmd->
     }
 }
 ?>
