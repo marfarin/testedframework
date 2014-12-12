@@ -6,9 +6,8 @@
  * and open the template in the editor.
  */
 
-namespace IccTest\base\Controller;
-use IccTest\base\FrontController\Request;
-use IccTest\base\Controller;
+namespace IccTest\MVC\controller;
+use IccTest\MVC\router\Request;
 /**
  * Description of DefaultCommand
  *

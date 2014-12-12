@@ -1,11 +1,19 @@
 <?php
 namespace IccTest\base\FrontController;
-use IccTest\base\FrontController\Request;
+use IccTest\MVC\router\Request;
+use IccTest\base\Helpers\ApplicationHelper;
 require_once 'core/base/Autoloader/PsrAutoloader.php';
 class FrontController
 {
     private $applicationHelper;
+    private  static $instance;
     private function __construct() {}
+    static function instance() {
+        if(!self::$instance) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
     static function run($start_config) {
         $instance = new FrontController();
         $instance -> init($start_config);
