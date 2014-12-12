@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-namespace IccTest\base\FrontController;
+namespace IccTest\MVC\router;
 use IccTest\base\Registry\ApplicationRegistry;
 /**
  * Description of Request
@@ -16,9 +16,8 @@ use IccTest\base\Registry\ApplicationRegistry;
 class Request {
     
     private $argument = array(
-        'use'=>"",
         'action'=>"",
-        'controller'=>"",
+        'router'=>"",
         'id'=>array(),
     );
     private $uri;
@@ -39,18 +38,10 @@ class Request {
         } else {
             $serachRouter = $this->serachRouter();
             echo $serachRouter;
-            //ApplicationRegistry::show();
-            $routingRule = ApplicationRegistry::get('routes');
-            //print_r($routingRule[$serachRouter]);
-            if(isset($routingRule[$serachRouter])) {
-                $this->argument['controller'] = $routingRule[$serachRouter]['controllerclass'];
-                $this->argument['use'] = $routingRule[$serachRouter]['vendor'].'\controller\\'.$routingRule[$serachRouter]['controllerclass'];
-                $this->argument['action'] = $this->addAction();
-                $this->argument['id'] = $this->addId();
-                print_r($this->argument);
-            } else {
-                echo '404';
-            }
+            $this->argument['router'] = $serachRouter;
+            $this->argument['action'] = $this->addAction();
+            $this->argument['id'] = $this->addId();
+            print_r($this->argument);
             return TRUE;
         }
     }
@@ -84,10 +75,7 @@ class Request {
     
     private function serachRouter()
     {
-        //echo '</br>'.$this->addControllerUri().'</br>';
-        //echo preg_replace("/^[A-Za-z0-9]*\=/","", $this->addControllerUri());
         return preg_replace("/^[A-Za-z0-9]*\=/","", $this->addControllerUri());
-        
     }
     
     private function addControllerUri()
@@ -101,8 +89,12 @@ class Request {
     }
     private function addAction()
     {
-        
-        return \preg_replace("/^[A-Za-z0-9]*\=/",'', \preg_split("/\/\?|\&|\?|\//", $this->uri)[2]);
+        $actionUri = \preg_split("/\/\?|\&|\?|\//", $this->uri);
+        if (array_key_exists(2, $actionUri)) {
+            return \preg_replace("/^[A-Za-z0-9]*\=/", '', \preg_split("/\/\?|\&|\?|\//", $this->uri)[2]);
+        } else {
+            return '';
+        }
     }
     private function addId()
     {   $testarray = array();
@@ -113,5 +105,12 @@ class Request {
             }
         }
         return $testarray;
+    }
+    
+    public function getUri()
+    {
+        if(isset($this->uri)) {
+            return $this->uri;
+        }
     }
 }

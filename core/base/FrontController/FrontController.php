@@ -19,8 +19,8 @@ class FrontController
     
     function handleRequest() {
         $request = new Request();
-        $cmd_r = 1;//CommandResolver
-        $cmd = 2;
+        $cmd_r = 1;//new CommandResolver();
+        $cmd = 2;//cmd_r->getCommand($request)
         //$cmd->execute($request);
     }
 }

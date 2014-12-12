@@ -6,14 +6,14 @@
  * and open the template in the editor.
  */
 
-namespace IccTest\base\Command;
-use IccTest\base\FrontController\Request;
+namespace IccTest\MVC\router;
+use IccTest\MVC\router\Request;
 /**
  * Description of CommandResolver
  *
  * @author stager3
  */
-class CommandResolver {
+class ControllerResolver {
     private static $base_cmd;
     private static $default_cmd;
     
@@ -24,7 +24,7 @@ class CommandResolver {
         }
     }
     
-    function getCommand(Request $request)
+    function getController(Request $request)
     {
         $cmd = $request->getProperty('cmd');
         $sep = DIRECTORY_SEPARATOR;

@@ -6,14 +6,14 @@
  * and open the template in the editor.
  */
 
-namespace IccTest\base\Command;
+namespace IccTest\MVC\controller;
 
 /**
  * Description of Command
  *
  * @author stager3
  */
-abstract class Command {
+abstract class Controller {
     
     final function __construct() {
         

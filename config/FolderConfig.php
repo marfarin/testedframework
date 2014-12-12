@@ -9,7 +9,8 @@ return array(
             ),
 	'system_folder' => "core",
         'system_vendor' => "IccTest",
-        'autoloader' => "core/base/Autoloader/PsrAutoloader.php"
+        'autoloader' => "core/base/Autoloader/PsrAutoloader.php",
+        'default_controller' => "",
     ),
     'user_config' => array(
         'routes' => array(

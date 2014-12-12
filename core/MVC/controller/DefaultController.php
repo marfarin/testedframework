@@ -6,14 +6,15 @@
  * and open the template in the editor.
  */
 
-namespace IccTest\base\Command;
+namespace IccTest\base\Controller;
 use IccTest\base\FrontController\Request;
+use IccTest\base\Controller;
 /**
  * Description of DefaultCommand
  *
  * @author stager3
  */
-class DefaultCommand extends Command {
+class DefaultController extends Controller {
     function doExecute(Request $request) {
         $request->addFeedback($msg);
     }
