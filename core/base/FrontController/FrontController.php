@@ -2,7 +2,8 @@
 namespace IccTest\base\FrontController;
 use IccTest\MVC\router\Request;
 use IccTest\base\Helpers\ApplicationHelper;
-require_once 'core/base/Autoloader/PsrAutoloader.php';
+use IccTest\MVC\router\ControllerResolver;
+//require_once 'core/base/Autoloader/PsrAutoloader.php';
 class FrontController
 {
     private $applicationHelper;
@@ -27,8 +28,9 @@ class FrontController
     
     function handleRequest() {
         $request = new Request();
-        $cmd_r = 1;//new CommandResolver();
-        $cmd = 2;//cmd_r->getCommand($request)
+        $cmd_r = new ControllerResolver();
+        $cmd = $cmd_r->getController($request);
+        
         //$cmd->execute($request);
     }
 }

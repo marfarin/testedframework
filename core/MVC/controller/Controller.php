@@ -7,6 +7,7 @@
  */
 
 namespace IccTest\MVC\controller;
+use IccTest\MVC\router\Request;
 
 /**
  * Description of Command
@@ -19,10 +20,10 @@ abstract class Controller {
         
     }
     
-    function execute($request)
+    function execute(Request $request)
     {
         $this->doExecute($request);
     }
-    abstract function doExecute($request);
+    abstract function doExecute(Request $request);
     //put your code here
 }
