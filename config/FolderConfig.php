@@ -53,4 +53,10 @@ return array(
             ),
         ),
     ),
+    "default_config" => array (
+        "default_controller" => "TestController",
+        "default_action" => "index",
+        "default_params" => array(),
+        "vendor" => "vendor1",
+    )
 );

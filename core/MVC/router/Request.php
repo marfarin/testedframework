@@ -33,15 +33,15 @@ class Request {
         if(null!==ApplicationRegistry::get($this->uri))
         {
             $this->argument = ApplicationRegistry::get($this->uri);
-            print_r($this->argument);
+            //print_r($this->argument);
             return false;
         } else {
             $serachRouter = $this->serachRouter();
-            echo $serachRouter;
+            //echo $serachRouter;
             $this->argument['router'] = $serachRouter;
             $this->argument['action'] = $this->addAction();
             $this->argument['id'] = $this->addId();
-            print_r($this->argument);
+            //print_r($this->argument);
             return TRUE;
         }
     }

@@ -65,8 +65,8 @@ class ApplicationRegistry extends BaseRegistry {
         }
     }
     static public function show() {
-        echo 'data</br>';
-        print_r(self::$data);
+        //echo 'data</br>';
+        //print_r(self::$data);
         //echo '</br>lock</br>';
         //print_r(self::$lock);
         //echo '</br>tress 1 '.self::get('application_folder').'</br>';

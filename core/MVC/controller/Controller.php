@@ -7,6 +7,7 @@
  */
 
 namespace IccTest\MVC\controller;
+use IccTest\MVC\view\View;
 use IccTest\MVC\router\Request;
 
 /**
@@ -15,15 +16,10 @@ use IccTest\MVC\router\Request;
  * @author stager3
  */
 abstract class Controller {
-    
-    final function __construct() {
-        
+    public function __construct() {}
+		
+    final public function loadView($view = '' ) {
+        return new View($view) ;
     }
-    
-    function execute(Request $request)
-    {
-        $this->doExecute($request);
-    }
-    abstract function doExecute(Request $request);
-    //put your code here
+		
 }

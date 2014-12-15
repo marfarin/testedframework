@@ -57,6 +57,12 @@ class ApplicationHelper {
         
         ApplicationRegistry::lock('system_config');
         
+        $this->ensure(is_array($this->config['default_config']), 
+                "Не найден раздел контроллера \"По умолчанию\"");
+        ApplicationRegistry::set('default_config', 
+                $this->config['default_config']);
+        
+        ApplicationRegistry::lock('default_config');
         $loader = new Psr4AutoloaderClass();
         $loader->register();
         $loader->addNamespace($this->config['system_config']['system_vendor'].'\base', $this->config['system_config']['system_folder'].'/base');
