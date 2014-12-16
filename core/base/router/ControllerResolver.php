@@ -1,7 +1,7 @@
 <?php
 
-namespace IccTest\MVC\router;
-use IccTest\MVC\router\Request;
+namespace IccTest\base\router;
+use IccTest\base\router\Request;
 use IccTest\base\Helpers\ApplicationHelper;
 
 class ControllerResolver {

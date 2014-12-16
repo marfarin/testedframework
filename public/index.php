@@ -24,7 +24,7 @@ $loader->register();
 $loader->addNamespace('IccTest\base', 'core/base');
 $loader->addNamespace('IccTest\MVC', 'core/MVC');
 //echo '</br> Старт </br>';
-$run = FrontController::run(require 'config/FolderConfig.php');
+$run = FrontController::instance(require 'config/FolderConfig.php');
 //echo '</br> Стоп </br>';
 
 //$rests2 = new testcontroller();

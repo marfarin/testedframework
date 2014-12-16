@@ -6,7 +6,7 @@
  * and open the template in the editor.
  */
 
-namespace IccTest\MVC\router;
+namespace IccTest\base\router;
 use IccTest\base\Helpers\ApplicationHelper;
 /**
  * Description of Request
@@ -16,8 +16,8 @@ use IccTest\base\Helpers\ApplicationHelper;
 class Request {
     
     private $argument = array(
-        'action'=>"",
         'router'=>"",
+        'action'=>"",
         'id'=>array(),
     );
     private $uri;
@@ -36,11 +36,7 @@ class Request {
             //print_r($this->argument);
             return false;
         } else {
-            $serachRouter = $this->addRouter();
-            //echo $serachRouter;
-            $this->argument['router'] = $serachRouter;
-            $this->argument['action'] = $this->addAction();
-            $this->argument['id'] = $this->addId();
+            $this->set();
             //print_r($this->argument);
             return TRUE;
         }
@@ -64,33 +60,42 @@ class Request {
         return Filter_input(\INPUT_SERVER, "REQUEST_URI");
     }
     
-    private function addRouter()
+    private function setRouterAction($index, $key)
     {
-        $actionUri = \preg_split("/\/\?|\&|\?|\//", $this->uri);
-        if (array_key_exists(1, $actionUri)) {
-            return \preg_replace("/^[A-Za-z0-9]*\=/", '', \preg_split("/\/\?|\&|\?|\//", $this->uri)[1]);
+        if (array_key_exists($index, $this->parseUri())) {
+            $this->argument[$key] = \preg_replace("/^[A-Za-z0-9]*\=/", '', \preg_split("/\/\?|\&|\?|\//", $this->uri)[$index]);
         } else {
-            return '';
+            $this->argument[$key] = '';
         }
     }
     
-    private function addAction()
-    {
-        $actionUri = \preg_split("/\/\?|\&|\?|\//", $this->uri);
-        if (array_key_exists(2, $actionUri)) {
-            return \preg_replace("/^[A-Za-z0-9]*\=/", '', \preg_split("/\/\?|\&|\?|\//", $this->uri)[2]);
-        } else {
-            return '';
-        }
-    }
-    private function addId()
+    private function setId()
     {   $testarray = array();
-        $array = \preg_split("/\/\?|\&|\?|\//", $this->uri);
-        foreach ($array as $key => $value) {
+        foreach ($this->parseUri() as $key => $value) {
             if($key>2) {
                 $testarray['_idkey'.$key] = \preg_replace("/^[A-Za-z0-9]*\=/","", $value);
             }
         }
-        return $testarray;
+        $this->argument['id'] = $testarray;
+    }
+    
+    private function parseUri()
+    {
+        return \preg_split("/\/\?|\&|\?|\//", $this->uri);
+    }
+    
+    private function set()
+    {
+        foreach ($this->argument as $key => $value) {
+            $a_keys = \array_keys($this->argument);
+            $index =  \array_search($key, $a_keys)+1;
+            if($index===1 OR $index===2)
+            {
+                $this->setRouterAction($index, $key);
+            } elseif($index>2) {
+                $this->setId();
+            }
+                        
+        }
     }
 }
