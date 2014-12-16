@@ -1,18 +1,7 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace IccTest\base\router;
 use IccTest\base\Helpers\ApplicationHelper;
-/**
- * Description of Request
- *
- * @author stager3
- */
+
 class Request {
     
     private $argument = array(
@@ -29,14 +18,14 @@ class Request {
     }
     
     protected function init() {
-        $this->uri = $this->parseRequest();
-        if(null!==ApplicationHelper::get($this->uri))
+        $this->setUri();
+        if(null!=ApplicationHelper::get($this->uri))
         {
             $this->argument = ApplicationHelper::get($this->uri);
             //print_r($this->argument);
             return false;
         } else {
-            $this->set();
+            $this->setAllArguments();
             //print_r($this->argument);
             return TRUE;
         }
@@ -44,7 +33,6 @@ class Request {
     
     function getArgument($key)
     {
-        //echo 'ska';
         if(\array_key_exists($key, $this->argument)) {
             if(isset($this->argument[$key])) {
                 return $this->argument[$key];
@@ -57,12 +45,12 @@ class Request {
     
     protected function parseRequest()
     {
-        return Filter_input(\INPUT_SERVER, "REQUEST_URI");
+         $this->uri = Filter_input(\INPUT_SERVER, "REQUEST_URI");
     }
     
-    private function setRouterAction($index, $key)
+    private function setRouterAndAction($index, $key)
     {
-        if (array_key_exists($index, $this->parseUri())) {
+        if (array_key_exists($index, $this->splitUri())) {
             $this->argument[$key] = \preg_replace("/^[A-Za-z0-9]*\=/", '', \preg_split("/\/\?|\&|\?|\//", $this->uri)[$index]);
         } else {
             $this->argument[$key] = '';
@@ -71,7 +59,7 @@ class Request {
     
     private function setId()
     {   $testarray = array();
-        foreach ($this->parseUri() as $key => $value) {
+        foreach ($this->splitUri() as $key => $value) {
             if($key>2) {
                 $testarray['_idkey'.$key] = \preg_replace("/^[A-Za-z0-9]*\=/","", $value);
             }
@@ -79,19 +67,19 @@ class Request {
         $this->argument['id'] = $testarray;
     }
     
-    private function parseUri()
+    private function splitUri()
     {
         return \preg_split("/\/\?|\&|\?|\//", $this->uri);
     }
     
-    private function set()
+    private function setAllArguments()
     {
         foreach ($this->argument as $key => $value) {
             $a_keys = \array_keys($this->argument);
             $index =  \array_search($key, $a_keys)+1;
             if($index===1 OR $index===2)
             {
-                $this->setRouterAction($index, $key);
+                $this->setRouterAndAction($index, $key);
             } elseif($index>2) {
                 $this->setId();
             }
