@@ -23,13 +23,14 @@ class FrontController
     
     function init($start_config) {
         $applicationHelper = ApplicationHelper::instance();
+        //ApplicationHelper::init($start_config);
         $applicationHelper->init($start_config);
     }
     
     function handleRequest() {
         $request = new Request();
         $cmd_r = new ControllerResolver();
-        $cmd = $cmd_r->getController($request);
+        $cmd = $cmd_r->run($request);
         //$cmd->execute($request);
     }
 }

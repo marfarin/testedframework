@@ -12,7 +12,7 @@ class TestController extends Controller
 
         $View = $this->loadView('TestController') ;
         //$View->view( 'TestController' ) ;
-        $arr = array( 'name' => 'Хелло Ворлд', 'facNo' => '223322223322', 
+        $arr = array( 'name' => 'Хелло Ворлд22', 'facNo' => '223322223322', 
             'age' => '27', 'url1' => '/route1/show/12/22', 
             'url2' => '/route2/show/12/22',
             'url3' => '/route/show/12/22',); 

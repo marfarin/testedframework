@@ -7,7 +7,7 @@
  */
 
 namespace IccTest\MVC\router;
-use IccTest\base\Registry\ApplicationRegistry;
+use IccTest\base\Helpers\ApplicationHelper;
 /**
  * Description of Request
  *
@@ -24,19 +24,19 @@ class Request {
     
     function __construct() {
         if($this->init()) {
-            ApplicationRegistry::set($this->uri, $this->argument);
+            ApplicationHelper::set($this->uri, $this->argument);
         }
     }
     
     protected function init() {
         $this->uri = $this->parseRequest();
-        if(null!==ApplicationRegistry::get($this->uri))
+        if(null!==ApplicationHelper::get($this->uri))
         {
-            $this->argument = ApplicationRegistry::get($this->uri);
+            $this->argument = ApplicationHelper::get($this->uri);
             //print_r($this->argument);
             return false;
         } else {
-            $serachRouter = $this->serachRouter();
+            $serachRouter = $this->addRouter();
             //echo $serachRouter;
             $this->argument['router'] = $serachRouter;
             $this->argument['action'] = $this->addAction();
@@ -59,40 +59,21 @@ class Request {
 
     }
     
-    protected function setArgument($key, $val) {
-        $this->$argument[$key] = $val;
-    }
-    
-    /*protected function addFeedback($msg) {
-        array_push($this->feedback, $msg);
-    }
-    
-    function getFeedback() {
-        return $this->feedback;
-    }
-    
-    function getFeedbackString($separator = "\n") {
-        return implode($separator, $this->feedback);
-    }*/
     protected function parseRequest()
     {
         return Filter_input(\INPUT_SERVER, "REQUEST_URI");
     }
     
-    private function serachRouter()
+    private function addRouter()
     {
-        return preg_replace("/^[A-Za-z0-9]*\=/","", $this->addControllerUri());
+        $actionUri = \preg_split("/\/\?|\&|\?|\//", $this->uri);
+        if (array_key_exists(1, $actionUri)) {
+            return \preg_replace("/^[A-Za-z0-9]*\=/", '', \preg_split("/\/\?|\&|\?|\//", $this->uri)[1]);
+        } else {
+            return '';
+        }
     }
     
-    private function addControllerUri()
-    {
-        return \preg_split("/\/\?|\&|\?|\//", $this->uri)[1];
-    }
-    
-    private function isGet($param) 
-    {
-        return \preg_match('/\=/', $param);
-    }
     private function addAction()
     {
         $actionUri = \preg_split("/\/\?|\&|\?|\//", $this->uri);
@@ -111,12 +92,5 @@ class Request {
             }
         }
         return $testarray;
-    }
-    
-    public function getUri()
-    {
-        if(isset($this->uri)) {
-            return $this->uri;
-        }
     }
 }

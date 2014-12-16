@@ -7,85 +7,124 @@
  */
 
 namespace IccTest\base\Helpers;
-use IccTest\base\Registry\ApplicationRegistry;
+use IccTest\base\Registry\BaseRegistry;
 use IccTest\base\Registry\MyException;
 use IccTest\base\Autoloader\Psr4AutoloaderClass;
-//require_once 'core/base/Autoloader/PsrAutoloader.php';
+
 /**
- * Description of ApplicationHelper
+ * Description of ApplicationRegistry
  *
  * @author stager3
  */
-class ApplicationHelper {
-    private  static $instance;
-    private $config;
-    
+class ApplicationHelper extends BaseRegistry {
+    private static $instance;
+    private static $data;
+    private static $lock = array();
     private function __construct() {
         
     }
-    
-    static function instance() {
-        if(!self::$instance) {
-            self::$instance = new self();
+    static public function instance() {
+        if(!isset(self::$instance)) {
+            self::$instance = new self();     
         }
         return self::$instance;
     }
-    
-    function init($start_config) {
-        $dsn = ApplicationRegistry::get('start_init');
+    static public function get($key, $defailt = NULL) {
+        if(self::has($key))
+        {
+            return self::$data[$key];
+        } else {
+            return $defailt;
+        }
+    }
+    static public function set($key,$value) {
+        if(!self::hasLock($key)) {
+            self::$data[$key] = $value;
+        } else {
+            throw new MyException("переменная '$key' регистра заблокирована");
+        }
+    }
+    static public function remove($key) {
+        if(self::has($key) && self::hasLock($key)) {
+            unset(self::$data[$key]);
+        } else {
+            throw new MyException("Удаление невозможно! Переменная регистра не существует или не заблокирована!");
+        }
+    }
+    static private function has($key) {
+        return isset(self::$data[$key]);
+    }
+    static public function lock($key) {
+        self::$lock[$key] = TRUE;
+    }
+    static private function hasLock($key) {
+        return isset(self::$lock[$key]);
+    }
+    static public function unlock($key) {
+        if(self::hasLock($key)) {
+            unset(self::$lock[$key]);
+        }
+    }
+    static public function show() {
+        //echo 'data</br>';
+        //print_r(self::$data);
+        //echo '</br>lock</br>';
+        //print_r(self::$lock);
+        //echo '</br>tress 1 '.self::get('application_folder').'</br>';
+    }
+    public function init($start_config) {
+        $dsn = self::get('start_init');
         //echo 'dsn '.$dsn.'</br>';
         if (!is_null($dsn)) {
             return;
         }
         if(is_array($start_config)) {
-            $this->config = $start_config;
-            $this->getOptions();                    
+            self::getOptions($start_config);                    
         } else {
-            $this->ensure(is_array($start_config), "Передайте верный параметр начальной конфигурации");
+            self::ensure(is_array($start_config), "Передайте верный параметр начальной конфигурации");
         }
     }
     
-    private function getOptions() {
+    private static function getOptions($start_config) {
         
-        $this->ensure(is_array($this->config), "Файл конфигурации не найден");
+        self::ensure(is_array($start_config), "Файл конфигурации не найден");
         
-        $this->ensure(is_array($this->config['system_config']), 
+        self::ensure(is_array($start_config['system_config']), 
                 "Системная конфигурация повреждена");
         
-        ApplicationRegistry::set('system_config', 
-                $this->config['system_config']);
+        self::set('system_config', 
+                $start_config['system_config']);
         
-        ApplicationRegistry::lock('system_config');
+        self::lock('system_config');
         
-        $this->ensure(is_array($this->config['default_config']), 
+        self::ensure(is_array($start_config['default_config']), 
                 "Не найден раздел контроллера \"По умолчанию\"");
-        ApplicationRegistry::set('default_config', 
-                $this->config['default_config']);
+        self::set('default_config', 
+                $start_config['default_config']);
         
-        ApplicationRegistry::lock('default_config');
+        self::lock('default_config');
         $loader = new Psr4AutoloaderClass();
         $loader->register();
-        $loader->addNamespace($this->config['system_config']['system_vendor'].'\base', $this->config['system_config']['system_folder'].'/base');
-        $loader->addNamespace($this->config['system_config']['system_vendor'].'\MVC', $this->config['system_config']['system_folder'].'/MVC');
-        $this->ensure(is_array($this->config['user_config']), 
+        $loader->addNamespace($start_config['system_config']['system_vendor'].'\base', $start_config['system_config']['system_folder'].'/base');
+        $loader->addNamespace($start_config['system_config']['system_vendor'].'\MVC', $start_config['system_config']['system_folder'].'/MVC');
+        self::ensure(is_array($start_config['user_config']), 
                 "Системная конфигурация повреждена");
-        ApplicationRegistry::set('routes', $this->config['user_config']['routes']);
-        ApplicationRegistry::lock('routes');
-        foreach ($this->config['user_config']['routes'] as $key => $value) {
-            //ApplicationRegistry::set($key, $value);
-            //ApplicationRegistry::lock($key);
-            $this->ensure(isset($value['vendor']), "Системная конфигурация повреждена");
+        self::set('routes', $start_config['user_config']['routes']);
+        self::lock('routes');
+        foreach ($start_config['user_config']['routes'] as $key => $value) {
+            //self::set($key, $value);
+            //self::lock($key);
+            self::ensure(isset($value['vendor']), "Системная конфигурация повреждена");
             $loader->addNamespace($value['vendor'].'\controller', 'application/controllers');
             $loader->addNamespace($value['vendor'].'\model', 'application/models');
             $loader->addNamespace($value['vendor'].'\view', 'application/views');
         }
-        ApplicationRegistry::unlock('start_init');
-        ApplicationRegistry::set('start_init', true);
-        ApplicationRegistry::lock('start_init');
-        //ApplicationRegistry::show(); 
+        self::unlock('start_init');
+        self::set('start_init', true);
+        self::lock('start_init');
+        //self::show(); 
     }
-    
-    private function ensure ($expr, $message) {
+    private static function ensure ($expr, $message) {
         if (!$expr) {
             throw new MyException($message);
         }
