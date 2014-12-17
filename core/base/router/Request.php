@@ -18,7 +18,7 @@ class Request {
     }
     
     protected function init() {
-        $this->setUri();
+        $this->parseRequest();
         if(null!=ApplicationHelper::get($this->uri))
         {
             $this->argument = ApplicationHelper::get($this->uri);

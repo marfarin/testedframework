@@ -10,14 +10,19 @@ return array(
 	'system_folder' => "core",
         'system_vendor' => "IccTest",
         'autoloader' => "core/base/Autoloader/PsrAutoloader.php",
-        'default_controller' => "",
+        'route404' => array(
+            'vendor'=>"IccTest\MVC",
+            'controllerclass' => "Controller404",
+            'defaultAction' => "index",
+            "default_params" => array(),
+        ),
     ),
     'user_config' => array(
         'routes' => array(
             'route1' => array(
                 'vendor'=>"vendor1",
                 'controllerclass' => "TestController",
-                'defailtAction' => "index",
+                'defaultAction' => "index",
                 'id' => array (
                     'separator' => "/",
                 ),
@@ -34,7 +39,7 @@ return array(
             'route2' => array(
                 'vendor'=>"vendor1",
                 'controllerclass' => "TestController",
-                'defailtAction' => "index",
+                'defaultAction' => "index",
                 'id' => array (
                     'request' => "uri",
                     'child_request' => "uri"
@@ -55,7 +60,7 @@ return array(
     ),
     "default_config" => array (
         "controllerclass" => "TestController",
-        "defailtAction" => "index",
+        "defaultAction" => "index",
         "default_params" => array(),
         "vendor" => "vendor1",
     )
