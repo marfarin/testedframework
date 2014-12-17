@@ -10,24 +10,24 @@ class TestController extends Controller
     function indexAction() {
         //echo "</br>Конструктор класса BaseClass\n";
 
-        $View = $this->loadView('TestController') ;
+        $view = $this->loadView('TestController') ;
         //$View->view( 'TestController' ) ;
         $arr = array( 'name' => 'Хелло Ворлд22', 'facNo' => '223322223322', 
             'age' => '27', 'url1' => '/route1/show/12/22', 
             'url2' => '/route2/show/12/22',
             'url3' => '/route/show/12/22',); 
-        $View->set( $arr ) ;
-        $View->render() ;
+        $view->set( $arr ) ;
+        $view->render() ;
 			
     }
-    function showAction($id, $id2) {
-        $View = $this->loadView('TestController') ;
+    function showAction($id1, $id2) {
+        $view = $this->loadView('TestController') ;
         //$View->view( 'TestController' ) ;
-        $arr = array( 'name' => $id, 'facNo' => '223322223322', 'age' => $id2,
+        $arr = array( 'name' => $id1, 'facNo' => '223322223322', 'age' => $id2,
             'url1' => '/route1/show/12/22', 
             'url2' => '/route2/show/12/22',
             'url3' => '/route/show/12/22',);
-        $View->set( $arr ) ;
-        $View->render() ;
+        $view->set( $arr ) ;
+        $view->render() ;
     }
 }
