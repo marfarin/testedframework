@@ -42,7 +42,7 @@ class View {
         }
     }
     
-    public function view( $view ) {
+    public function setViiew( $view ) {
         $this->view = $view ;
     }
     

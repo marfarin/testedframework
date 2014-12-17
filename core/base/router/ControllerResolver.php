@@ -5,8 +5,8 @@ use IccTest\base\router\Request;
 use IccTest\base\Helpers\ApplicationHelper;
 
 class ControllerResolver {
-    private static $base_cmd;
-    private static $default_cmd;
+    private static $baseCmd;
+    private static $defaultCmd;
     private static $rules = array('vendor'=>'',
         'defaultAction'=>'',
         'controllerclass'=>'',
@@ -15,9 +15,9 @@ class ControllerResolver {
 
     
     function __construct() {
-        if(!self::$base_cmd) {
-            self::$base_cmd = new \ReflectionClass("IccTest\MVC\controller\Controller");
-            self::$default_cmd = new \ReflectionClass("IccTest\MVC\controller\Controller");
+        if(!self::$baseCmd) {
+            self::$baseCmd = new \ReflectionClass("IccTest\MVC\controller\Controller");
+            self::$defaultCmd = new \ReflectionClass("IccTest\MVC\controller\Controller");
         }
     }
     
@@ -90,7 +90,7 @@ class ControllerResolver {
     private function callController($action, $param = array())
     {
         $controllerClass = new \ReflectionClass(self::$use);
-        if($controllerClass->isSubclassOf(self::$base_cmd)) {
+        if($controllerClass->isSubclassOf(self::$baseCmd)) {
             $method = $controllerClass->getMethod($action);
             $method->invokeArgs($controllerClass->newInstance(), $param);
         } else {

@@ -8,11 +8,11 @@ class FrontController
 {
     private  static $instance;
     private function __construct() {}
-    static function instance($start_config) {
+    static function instance($startConfig) {
         if(!self::$instance) {
             self::$instance = new self();
             $instance = new FrontController();
-            $instance->init($start_config);
+            $instance->init($startConfig);
             $instance->handleRequest();
         }
         return self::$instance;
@@ -23,16 +23,16 @@ class FrontController
         $instance->handleRequest();
     }*/
     
-    function init($start_config) {
+    function init($startConfig) {
         $applicationHelper = ApplicationHelper::instance();
         //ApplicationHelper::init($start_config);
-        $applicationHelper->init($start_config);
+        $applicationHelper->init($startConfig);
     }
     
     function handleRequest() {
         $request = new Request();
-        $cmd_r = new ControllerResolver();
-        $cmd = $cmd_r->run($request);
+        $controllerResolve = new ControllerResolver();
+        $controllerResolve->run($request);
         //$cmd->execute($request);
     }
 }

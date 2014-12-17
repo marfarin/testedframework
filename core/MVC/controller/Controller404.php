@@ -18,14 +18,14 @@ class Controller404 extends Controller {
         function indexAction() {
         //echo "</br>Конструктор класса BaseClass\n";
 
-        $View = $this->loadView('TestController') ;
+        $view = $this->loadView('TestController') ;
         //$View->view( 'TestController' ) ;
         $arr = array( 'name' => '404', 'facNo' => '404', 
             'age' => '404', 'url1' => '/route1/show/12/22', 
             'url2' => '/route2/show/12/22',
             'url3' => '/route/show/12/22',); 
-        $View->set( $arr ) ;
-        $View->render() ;
+        $view->set( $arr ) ;
+        $view->render() ;
 			
     }
 }

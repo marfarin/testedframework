@@ -83,14 +83,14 @@ class Psr4AutoloaderClass
      * than last.
      * @return void
      */
-    public function addNamespace($prefix, $base_dir, $prepend = false)
+    public function addNamespace($prefix, $baseDir, $prepend = false)
     {
         // normalize namespace prefix
         $prefix = trim($prefix, '\\') . '\\';
         //echo '</br>'.$base_dir.' xyz '.$prefix.'</br>';
         
         // normalize the base directory with a trailing separator
-        $base_dir = rtrim($base_dir, DIRECTORY_SEPARATOR) . '/';
+        $baseDir = rtrim($baseDir, DIRECTORY_SEPARATOR) . '/';
         //echo '</br>'.'normalaize basedir '.$base_dir.'</br>';
 
         // initialize the namespace prefix array
@@ -100,9 +100,9 @@ class Psr4AutoloaderClass
 
         // retain the base directory for the namespace prefix
         if ($prepend) {
-            array_unshift($this->prefixes[$prefix], $base_dir);
+            array_unshift($this->prefixes[$prefix], $baseDir);
         } else {
-            array_push($this->prefixes[$prefix], $base_dir);
+            array_push($this->prefixes[$prefix], $baseDir);
         }
     }
 

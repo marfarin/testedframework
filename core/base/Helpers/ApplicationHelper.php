@@ -72,46 +72,46 @@ class ApplicationHelper extends BaseRegistry {
         //print_r(self::$lock);
         //echo '</br>tress 1 '.self::get('application_folder').'</br>';
     }
-    public function init($start_config) {
+    public function init($startConfig) {
         $dsn = self::get('start_init');
         //echo 'dsn '.$dsn.'</br>';
         if (!is_null($dsn)) {
             return;
         }
-        if(is_array($start_config)) {
-            self::getOptions($start_config);                    
+        if(is_array($startConfig)) {
+            self::getOptions($startConfig);                    
         } else {
-            self::ensure(is_array($start_config), "Передайте верный параметр начальной конфигурации");
+            self::ensure(is_array($startConfig), "Передайте верный параметр начальной конфигурации");
         }
     }
     
-    private static function getOptions($start_config) {
+    private static function getOptions($startConfig) {
         
-        self::ensure(is_array($start_config), "Файл конфигурации не найден");
+        self::ensure(is_array($startConfig), "Файл конфигурации не найден");
         
-        self::ensure(is_array($start_config['system_config']), 
+        self::ensure(is_array($startConfig['system_config']), 
                 "Системная конфигурация повреждена");
         
         self::set('system_config', 
-                $start_config['system_config']);
+                $startConfig['system_config']);
         
         self::lock('system_config');
         
-        self::ensure(is_array($start_config['default_config']), 
+        self::ensure(is_array($startConfig['default_config']), 
                 "Не найден раздел контроллера \"По умолчанию\"");
         self::set('default_config', 
-                $start_config['default_config']);
+                $startConfig['default_config']);
         
         self::lock('default_config');
         $loader = new Psr4AutoloaderClass();
         $loader->register();
-        $loader->addNamespace($start_config['system_config']['system_vendor'].'\base', $start_config['system_config']['system_folder'].'/base');
-        $loader->addNamespace($start_config['system_config']['system_vendor'].'\MVC', $start_config['system_config']['system_folder'].'/MVC');
-        self::ensure(is_array($start_config['user_config']), 
+        $loader->addNamespace($startConfig['system_config']['system_vendor'].'\base', $startConfig['system_config']['system_folder'].'/base');
+        $loader->addNamespace($startConfig['system_config']['system_vendor'].'\MVC', $startConfig['system_config']['system_folder'].'/MVC');
+        self::ensure(is_array($startConfig['user_config']), 
                 "Системная конфигурация повреждена");
-        self::set('routes', $start_config['user_config']['routes']);
+        self::set('routes', $startConfig['user_config']['routes']);
         self::lock('routes');
-        foreach ($start_config['user_config']['routes'] as $key => $value) {
+        foreach ($startConfig['user_config']['routes'] as $value) {
             //self::set($key, $value);
             //self::lock($key);
             self::ensure(isset($value['vendor']), "Системная конфигурация повреждена");

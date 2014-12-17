@@ -75,8 +75,8 @@ class Request {
     private function setAllArguments()
     {
         foreach ($this->argument as $key => $value) {
-            $a_keys = \array_keys($this->argument);
-            $index =  \array_search($key, $a_keys)+1;
+            $argKeys = \array_keys($this->argument);
+            $index =  \array_search($key, $argKeys)+1;
             if($index===1 OR $index===2)
             {
                 $this->setRouterAndAction($index, $key);
