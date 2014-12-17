@@ -50,7 +50,7 @@ class Request {
     
     private function setRouterAndAction($index, $key)
     {
-        if (array_key_exists($index, $this->splitUri())) {
+        if (\array_key_exists($index, $this->splitUri())) {
             $this->argument[$key] = \preg_replace("/^[A-Za-z0-9]*\=/", '', \preg_split("/\/\?|\&|\?|\//", $this->uri)[$index]);
         } else {
             $this->argument[$key] = '';
