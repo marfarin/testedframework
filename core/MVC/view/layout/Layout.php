@@ -16,8 +16,8 @@ namespace IccTest\MVC\view\layout;
 
 
 class Layout {
-    private $content;
-    private $layout;
+    protected $content;
+    protected $layout;
     
     public function setContent($content)
     {
@@ -26,7 +26,10 @@ class Layout {
     
     public function setLayout( $layout = '' ) 
     {
-        $this->layout = $layout;
+        if($layout!=='')
+        {
+            $this->layout = $layout;
+        }
     }
     
 }

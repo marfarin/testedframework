@@ -74,8 +74,9 @@ class Request {
     
     private function setAllArguments()
     {
-        foreach ($this->argument as $key => $value) {
-            $argKeys = \array_keys($this->argument);
+        
+        $argKeys = \array_keys($this->argument);
+        foreach ($argKeys as $key) {
             $index =  \array_search($key, $argKeys)+1;
             if($index===1 OR $index===2)
             {

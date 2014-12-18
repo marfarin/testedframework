@@ -14,7 +14,7 @@ use IccTest\MVC\view\layout\Layout;
  *
  * @author stager3
  */
-class View {
+class View  extends Layout {
     private $view = '' ;
 		
     private $vars = array() ;
@@ -22,7 +22,7 @@ class View {
     private $render ;
     
     
-    private $layout;
+    //private $layout;
     
     public function __construct($view = '' ) {
         if( !empty( $view ) ) {
@@ -51,7 +51,7 @@ class View {
     }
     
 
-    public function render( $render = true, $use_layout = false ) {
+    public function render( $render = true, $useLayout = false ) {
         if ($render === false) {
             $this->render = false;
         }
@@ -60,7 +60,7 @@ class View {
         }
 
         $ext = ".php";
-        if($use_layout) {
+        if($useLayout) {
             $this->layout =	"application/views/layout/" . $this->layout . $ext ;
         } else {
             $this->layout =	"core/MVC/view/layout/DefaultLayout". $ext ;
@@ -76,10 +76,6 @@ class View {
         $this->render = false ;
     }
     
-    public function setLayout( $layout = '' ) 
-    {
-        $this->layout = $layout;
-    }
     
     private function renderView()
     {
@@ -90,7 +86,7 @@ class View {
     }
     private function renderLayout()
     {
-        $contentForLayout = $this->renderView();
+        $this->content = $this->renderView();
         ob_start() ;
         include $this->layout ;
     }

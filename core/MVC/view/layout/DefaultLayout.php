@@ -11,7 +11,7 @@
 <body>
     <div style="height: 150px;"><h1>Это layout</h1></div>
     <div>
-	<?php echo $contentForLayout; ?>
+	<?php echo $this->content; ?>
     </div>
     <div style="height: 150px; margin-top: 150px;"><h1>Это layout</h1></div>
 </body>
