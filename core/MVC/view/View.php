@@ -7,6 +7,7 @@
  */
 
 namespace IccTest\MVC\view;
+use IccTest\MVC\view\layout\Layout;
 
 /**
  * Description of View
@@ -19,6 +20,9 @@ class View {
     private $vars = array() ;
 		
     private $render ;
+    
+    
+    private $layout;
     
     public function __construct($view = '' ) {
         if( !empty( $view ) ) {
@@ -42,11 +46,12 @@ class View {
         }
     }
     
-    public function setViiew( $view ) {
+    public function setView( $view ) {
         $this->view = $view ;
     }
     
-    public function render( $render = true ) {
+
+    public function render( $render = true, $use_layout = false ) {
         if ($render === false) {
             $this->render = false;
         }
@@ -55,16 +60,39 @@ class View {
         }
 
         $ext = ".php";
+        if($use_layout) {
+            $this->layout =	"application/views/layout/" . $this->layout . $ext ;
+        } else {
+            $this->layout =	"core/MVC/view/layout/DefaultLayout". $ext ;
+        }
 			
         $this->view = "application/views/" . $this->view . $ext ;
         unset( $render, $ext ) ;
-			
-        extract( $this->vars, EXTR_OVERWRITE ) ;
-        ob_start() ;
-        include $this->view ;
+	//$this->view();		
+        $this->renderLayout();
+        
         header( 'Content-length: ' . ob_get_length() ) ;
 			
         $this->render = false ;
+    }
+    
+    public function setLayout( $layout = '' ) 
+    {
+        $this->layout = $layout;
+    }
+    
+    private function renderView()
+    {
+        extract( $this->vars, EXTR_OVERWRITE ) ;
+        ob_start() ;
+        include $this->view;
+        return ob_get_clean() ;
+    }
+    private function renderLayout()
+    {
+        $contentForLayout = $this->renderView();
+        ob_start() ;
+        include $this->layout ;
     }
     //put your code here
 }
