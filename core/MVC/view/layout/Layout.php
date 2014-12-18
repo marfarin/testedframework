@@ -24,11 +24,13 @@ class Layout {
         $this->content = $content;
     }
     
-    public function setLayout( $layout = '' ) 
+    public function setLayout($layout) 
     {
-        if($layout!=='')
-        {
-            $this->layout = $layout;
+        $ext = ".php";
+        if($layout!='' AND $layout!=FALSE) {
+            $this->layout =	"application/views/layout/" . $layout . $ext ;
+        } else {
+            $this->layout =	"core/MVC/view/layout/DefaultLayout". $ext ;
         }
     }
     

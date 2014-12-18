@@ -58,14 +58,11 @@ class View  extends Layout {
         if ($this->render === false) {
             return false;
         }
-
         $ext = ".php";
-        if($useLayout) {
-            $this->layout =	"application/views/layout/" . $this->layout . $ext ;
-        } else {
-            $this->layout =	"core/MVC/view/layout/DefaultLayout". $ext ;
+        if($useLayout===false AND !isset($this->layout))
+        {
+            $this->layout = "core/MVC/view/layout/DefaultLayout.php";
         }
-			
         $this->view = "application/views/" . $this->view . $ext ;
         unset( $render, $ext ) ;
 	//$this->view();		
@@ -75,7 +72,6 @@ class View  extends Layout {
 			
         $this->render = false ;
     }
-    
     
     private function renderView()
     {
