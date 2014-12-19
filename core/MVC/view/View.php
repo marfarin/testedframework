@@ -73,7 +73,7 @@ class View extends Layout
         $this->renderLayout();
         
         header('Content-length: ' . ob_get_length()) ;
-        $this->render = falses;
+        $this->render = false;
     }
     
     private function renderView()
