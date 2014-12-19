@@ -15,7 +15,8 @@ namespace IccTest\MVC\view\layout;
  */
 
 
-class Layout {
+class Layout
+{
     protected $content;
     protected $layout;
     
@@ -23,15 +24,14 @@ class Layout {
     {
         $this->content = $content;
     }
-    
-    public function setLayout($layout) 
+
+    public function setLayout($layout)
     {
         $ext = ".php";
-        if($layout!='' AND $layout!=FALSE) {
+        if ($layout!='' and $layout!=false) {
             $this->layout =	"application/views/layout/" . $layout . $ext ;
         } else {
             $this->layout =	"core/MVC/view/layout/DefaultLayout". $ext ;
         }
     }
-    
 }

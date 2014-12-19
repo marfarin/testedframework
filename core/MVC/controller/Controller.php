@@ -7,6 +7,7 @@
  */
 
 namespace IccTest\MVC\controller;
+
 use IccTest\MVC\view\View;
 use IccTest\MVC\router\Request;
 
@@ -15,11 +16,15 @@ use IccTest\MVC\router\Request;
  *
  * @author stager3
  */
-abstract class Controller {
-    public function __construct() {}
-		
-    final public function loadView($view = '' ) {
+abstract class Controller
+{
+    public function __construct()
+    {
+        
+    }
+
+    final public function loadView($view = '')
+    {
         return new View($view) ;
     }
-		
 }

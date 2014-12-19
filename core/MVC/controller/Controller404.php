@@ -13,19 +13,20 @@ namespace IccTest\MVC\controller;
  *
  * @author stager3
  */
-class Controller404 extends Controller {
+class Controller404 extends Controller
+{
     //put your code here
-        function indexAction() {
+    public function indexAction()
+    {
         //echo "</br>Конструктор класса BaseClass\n";
 
         $view = $this->loadView('TestController') ;
         //$View->view( 'TestController' ) ;
-        $arr = array( 'name' => '404', 'facNo' => '404', 
-            'age' => '404', 'url1' => '/route1/show/12/22', 
+        $arr = array( 'name' => '404', 'facNo' => '404',
+            'age' => '404', 'url1' => '/route1/show/12/22',
             'url2' => '/route2/show/12/22',
-            'url3' => '/route/show/12/22',); 
-        $view->set( $arr ) ;
+            'url3' => '/route/show/12/22',);
+        $view->set($arr) ;
         $view->render() ;
-			
     }
 }

@@ -7,7 +7,7 @@ return array(
             'models_folder' => "models",
             'views_folder' => "views",
             ),
-	'system_folder' => "core",
+        'system_folder' => "core",
         'system_vendor' => "IccTest",
         'autoloader' => "core/base/Autoloader/PsrAutoloader.php",
         'route404' => array(

@@ -1,10 +1,13 @@
 <?php
 
 namespace IccTest\base\router;
+
 use IccTest\base\router\Request;
+
 use IccTest\base\Helpers\ApplicationHelper;
 
-class ControllerResolver {
+class ControllerResolver
+{
     private static $baseCmd;
     private static $defaultCmd;
     private static $rules = array('vendor'=>'',
@@ -14,8 +17,9 @@ class ControllerResolver {
     private static $use;
 
     
-    function __construct() {
-        if(!self::$baseCmd) {
+    public function __construct()
+    {
+        if (!self::$baseCmd) {
             self::$baseCmd = new \ReflectionClass("IccTest\MVC\controller\Controller");
             self::$defaultCmd = new \ReflectionClass("IccTest\MVC\controller\Controller");
         }
@@ -28,10 +32,11 @@ class ControllerResolver {
         $this->setController($params['action'], $params['param']);
     }
     
-    private function getRequestParam(Request $request) {
+    private function getRequestParam(Request $request)
+    {
         $router = $request->getArgument('router');
         $action = $request->getArgument('action');
-        if($router!='') {
+        if ($router!='') {
             $param = $request->getArgument('id');
         } else {
             $param = ApplicationHelper::get("default_config")['default_params'];
@@ -39,15 +44,14 @@ class ControllerResolver {
         return array('router'=>$router, 'action'=>$action, 'param'=>$param);
     }
     
-    private function setRules($router) 
+    private function setRules($router)
     {
         
-        if($router!='') {
+        if ($router!='') {
             $rules = ApplicationHelper::get("routes");
-            if(array_key_exists($router, $rules)) {
+            if (array_key_exists($router, $rules)) {
                 $this->initRule($rules[$router]);
-            }
-            else {
+            } else {
                 $rules = ApplicationHelper::get("system_config");
                 $this->initRule($rules['route404']);
             }
@@ -57,20 +61,21 @@ class ControllerResolver {
         }
     }
     
-    private function setController($action, $param) { 
-        if(!isset($action)) {
+    private function setController($action, $param)
+    {
+        if (!isset($action)) {
             $action = self::$rules['defaultAction'].'Action';
         } else {
-            $action = $action.'Action'; 
+            $action = $action.'Action';
         }
         $this->callUse($action, $param);
     }
     
     private function callUse($action, $param)
     {
-        if(new self::$use) {
-            if(!method_exists(self::$use, $action)) {
-               $action = self::$rules['defaultAction'].'Action';
+        if (new self::$use) {
+            if (!method_exists(self::$use, $action)) {
+                $action = self::$rules['defaultAction'].'Action';
             }
             $this->callController($action, $param);
         } else {
@@ -90,7 +95,7 @@ class ControllerResolver {
     private function callController($action, $param = array())
     {
         $controllerClass = new \ReflectionClass(self::$use);
-        if($controllerClass->isSubclassOf(self::$baseCmd)) {
+        if ($controllerClass->isSubclassOf(self::$baseCmd)) {
             $method = $controllerClass->getMethod($action);
             $method->invokeArgs($controllerClass->newInstance(), $param);
         } else {

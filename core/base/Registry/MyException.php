@@ -16,4 +16,7 @@ use Exception;
  * @author stager3
  */
 
-class MyException extends Exception { }
+class MyException extends Exception
+{
+    
+}
